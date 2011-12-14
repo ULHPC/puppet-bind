@@ -1,5 +1,5 @@
 name       'bind'
-version    '0.0.2'
+version    '0.0.3'
 source     'git-admin.uni.lu:puppet-repo.git'
 author     'Sebastien Varrette (Sebastien.Varrette@uni.lu)'
 license    'GPL v3'
