@@ -22,6 +22,14 @@
 #   Type of zone (can be either 'master', 'slave' or 'forward').
 #   Default: 'master'
 #
+# [*masters*]
+#   List of master servers by IP, only valid when zone_type = slaves
+#   Default: empty
+#
+# [*slaves*]
+#   List of slave servers by IP, only valid when zone_type = master
+#   Default: empty
+#
 # [*content*]
 #  Specify the contents of the zone configuration as a string. Newlines, tabs,
 #  and spaces can be specified using the escaped syntax (e.g., \n for a newline)
@@ -90,6 +98,8 @@ define bind::zone(
     $content    = '',
     $source     = '',
     $zone_type  = 'master',
+    masters     = '',
+    slaves      = '',
     $reverse_RR = false,
     $add_to_resolver = false
 )
@@ -137,8 +147,19 @@ define bind::zone(
     if ! ($zone_type in [ 'master', 'slave', 'forward' ]) {
         fail("bind::zone 'zone_type' parameter must be set to either 'master', 'slave' or 'forward'")
     }
-    if ($zone_type in [ 'slave', 'forward' ]) {
+    if ($zone_type in [ 'forward' ]) {
         fail("The BIND zone type ${zone_type} is not yet implemented")
+    }
+
+    if (
+         ($zone_type == 'slave'  and
+         ($masters == '' or $slaves != '' ))
+       or
+         ($zone_type == 'master' and
+         $masters != '')
+       )
+    {
+        fail("Inconsistent use of zone_type (${zone_type}), slaves (${slaves}) and masters (${masters}) parameters")
     }
 
     # if content is passed, use that, else if source is passed use that
@@ -158,12 +179,12 @@ define bind::zone(
     if ($reverse_RR) and ($add_to_resolver) {
         fail("${name}: Cannot have a reverse zone set to be added to /etc/resolv.conf")
     }
-    
+
     # Let's go
     info("Manage the custom bind zone ${zonename} of type ${zone_type} (with ensure = ${ensure})")
 
     if ($bind::ensure == 'present') {
-        
+
         concat::fragment { "configure bind zone ${zonename}":
             target  => "${bind::params::localconfigfile}",
             ensure  => "${ensure}",
@@ -189,6 +210,6 @@ define bind::zone(
                 notify     => Service['bind']
             }
         }
-        
+
     }
 }
