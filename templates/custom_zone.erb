@@ -1,4 +1,13 @@
 zone "<%= zonename %>" {
     type <%= zone_type %>;
     file "/etc/bind/zones/<%= zonefile %>";
+<% if zone_type == 'master' and slaves != '' -%>
+    allow-transfer {
+      <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
+    };
+<% end -%><% if zone_type == 'slave' -%>
+    masters {
+      <% scope.lookupvar('masters').each do |masters_ip| %><%= masters_ip %>;<% end %>
+    };
+<% end -%>
 };
