@@ -98,8 +98,8 @@ define bind::zone(
     $content    = '',
     $source     = '',
     $zone_type  = 'master',
-    masters     = '',
-    slaves      = '',
+    $masters    = '',
+    $slaves     = '',
     $reverse_RR = false,
     $add_to_resolver = false
 )
