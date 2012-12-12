@@ -66,10 +66,6 @@
 #        source => "puppet:///private/gaia-cluster/db.gaia-cluster.uni.lux",
 #        add_to_resolver => true
 #    }
-#    bind::zone { '10.225':
-#        reverse_RR => true,
-#        source     => "puppet:///private/gaia-cluster/db.reverse-225.10"
-#    }
 #    bind::zone { '10.226':
 #        reverse_RR => true,
 #        source     => "puppet:///private/gaia-cluster/db.reverse-226.10"
