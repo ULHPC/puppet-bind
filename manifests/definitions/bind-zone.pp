@@ -45,7 +45,7 @@
 #  Whether or not a Ressources Records (RR) for the reverse resolution is
 #  provided. In this case, you are expected to put as name $name for this
 #  definition the base IP of the network NOT IN THE REVERSE ORDER. See the
-#  example below.   
+#  example below.
 #
 # [*add_to_resolver*]
 #   add this domain to /etc/resolv.conf, associated to the nameserver
@@ -74,7 +74,7 @@
 #        reverse_RR => true,
 #        source     => "puppet:///private/gaia-cluster/db.reverse-226.10"
 #    }
-#    
+#
 # This will lead to the following files:
 #  $> ls /etc/bind/zones
 #  gaia-cluster.uni.lux.db  reverse-225.10.db  reverse-226.10.db
@@ -84,7 +84,7 @@
 #  domain gaia-cluster.uni.lux
 #  search gaia-cluster.uni.lux
 #  nameserver 127.0.0.1
-# 
+#
 
 # == Warnings
 #
@@ -119,10 +119,10 @@ define bind::zone(
         # Reverse name resolution i.e. from IPs to hostname
         $reverse_ip = inline_template("<%= name.split('.').reverse.join('.') %>")
         $zonename   = "${reverse_ip}.in-addr.arpa"
-        $zonefile   = "reverse-${reverse_ip}.db" 
+        $zonefile   = "reverse-${reverse_ip}.db"
         $priority = 60
     }
-        
+
     # First checks
     # Ensure the class bind has been instanciated
     if (! defined( Class['bind'] ) ) {
@@ -167,7 +167,7 @@ define bind::zone(
         '': {
             case $source {
                 '': {
-                    crit('No content nor source have been  specified')
+                    crit('No content nor source have been specified')
                 }
                 default: { $real_source = $source }
             }
