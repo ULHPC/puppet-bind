@@ -1,5 +1,5 @@
 name    'bind'
-version '0.1.1'
+version '0.1.2'
 source  'git-admin.uni.lu:puppet-repo.git'
 author  'Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)'
 license 'GPL v3'
