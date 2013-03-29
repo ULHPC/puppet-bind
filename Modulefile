@@ -1,14 +1,14 @@
 name    'bind'
-version '0.1.2'
+version '0.1.3'
 source  'git-admin.uni.lu:puppet-repo.git'
-author  'Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)'
+author  ' ()'
 license 'GPL v3'
 summary      'Configure and manage the DNS server (Bind9)'
 description  'Configure and manage the DNS server (Bind9)'
 project_page 'UNKNOWN'
 
 ## List of the classes defined in this module
-classes     'bind, bind::common, bind::debian, bind::redhat, bind::params'
+classes     'bind::params, bind, bind::common, bind::debian, bind::redhat'
 ## List of the definitions defined in this module
 definitions 'concat, syslog'
 
