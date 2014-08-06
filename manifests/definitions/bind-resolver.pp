@@ -66,17 +66,14 @@ define bind::resolver(
     $domain_name = $name
 
     # First checks
-    # Ensure the class bind has been instanciated
     if (! defined( Concat['/etc/resolv.conf'] ) ) {
-        warning("concat /etc/resolv.conf is not set")
-
         # backup resolv.conf
         exec { "cp /etc/resolv.conf /etc/resolv.conf.old":
             path   => "/usr/bin:/usr/sbin:/bin",
             unless => "test -f /etc/resolv.conf.old",
             notify => Concat['/etc/resolv.conf']
         }
-        
+
         include concat::setup
         concat { '/etc/resolv.conf':
             warn    => true,
