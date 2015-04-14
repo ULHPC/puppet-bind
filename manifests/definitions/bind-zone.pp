@@ -30,6 +30,11 @@
 #   List of slave servers by IP, only valid when zone_type = master
 #   Default: empty
 #
+# [*forwarders*]
+#   forwarders defines a list of IP address(es) (and optional port numbers) to
+#   which queries will be forwarded.
+#   Default: empty
+#
 # [*content*]
 #  Specify the contents of the zone configuration as a string. Newlines, tabs,
 #  and spaces can be specified using the escaped syntax (e.g., \n for a newline)
@@ -96,6 +101,7 @@ define bind::zone(
     $zone_type  = 'master',
     $masters    = '',
     $slaves     = '',
+    $forwarders = '',
     $reverse_RR = false,
     $add_to_resolver = false
 )
