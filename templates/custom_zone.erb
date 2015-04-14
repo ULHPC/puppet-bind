@@ -1,6 +1,7 @@
 zone "<%= zonename %>" {
     type <%= zone_type %>;
     file "/etc/bind/zones/<%= zonefile %>";
+    forwarders { <% scope.lookupvar('forwarders').each do |fw| %><%= fw %>; <% end %> };
 <% if zone_type == 'master' and slaves != '' -%>
     allow-transfer {
       <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
