@@ -6,6 +6,10 @@ zone "<%= zonename %>" {
     allow-transfer {
       <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
     };
+    also-notify {
+      <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
+    };
+    notify yes;
 <% end -%><% if zone_type == 'slave' -%>
     masters {
       <% scope.lookupvar('masters').each do |masters_ip| %><%= masters_ip %>;<% end %>
