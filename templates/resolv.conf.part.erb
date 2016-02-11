@@ -1,0 +1,4 @@
+domain <%= scope.lookupvar('domain_name') %>
+search <%= scope.lookupvar('domain_name') %>
+<% scope.lookupvar('nameserver').each do |ns| %>nameserver <%= ns %>
+<% end %>
