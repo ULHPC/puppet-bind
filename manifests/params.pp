@@ -30,32 +30,32 @@ class bind::params {
     ###########################################
 
     # ensure the presence (or absence) of bind
-    $ensure = $bind_ensure ? {
+    $ensure = $::bind_ensure ? {
         ''      => 'present',
-        default => "${bind_ensure}"
+        default => $::bind_ensure
     }
 
     # The Protocol used. Used by monitor and firewall class. Default is 'tcp'
-    $protocol = $bind_protocol ? {
+    $protocol = $::bind_protocol ? {
         ''      => 'tcp',
-        default => "${bind_protocol}",
+        default => $::bind_protocol,
     }
     # The port number. Used by monitor and firewall class. The default is 22.
-    $port = $bind_port ? {
+    $port = $::bind_port ? {
         ''      => 53,
-        default => "${bind_port}",
+        default => $::bind_port,
     }
 
     # Define global forwarders. Can be an array
-    $forwarders = $bind_forwarders ? {
+    $forwarders = $::bind_forwarders ? {
         ''      => [ '10.21.0.5' ],
-        default => $bind_forwarders,
+        default => $::bind_forwarders,
     }
 
     # clients authorized for querying the server; can be an array
-    $allow_query = $bind_allow_query ? {
+    $allow_query = $::bind_allow_query ? {
         ''      => '',
-        default => $bind_allow_query,
+        default => $::bind_allow_query,
     }
 
     #### MODULE INTERNAL VARIABLES  #########
@@ -73,7 +73,7 @@ class bind::params {
     # The User running bind
     $user = $::operatingsystem ? {
         /(?i-mx:ubuntu|debian)/ => 'bind',
-        default                 => "named",
+        default                 => 'named',
     }
     $group = $user
 
@@ -97,7 +97,7 @@ class bind::params {
 
     # Chroot dir
     $chrootdir =  $::operatingsystem ? {
-        default => "/var/chroot/bind",
+        default => '/var/chroot/bind',
     }
 
     # Configuration directory
@@ -118,18 +118,18 @@ class bind::params {
     }
 
     $configfile_owner = $::operatingsystem ? {
-        default => "${user}",
+        default => $user,
     }
 
     $configfile_group = $::operatingsystem ? {
-        default => "${group}",
+        default => $group,
     }
 
     # named.conf.local
     $localconfigfile = $::operatingsystem ? {
         default => "${configfile}.local"
     }
-    
+
     # named.conf.options
     $optionsfile = $::operatingsystem ? {
         default => "${configfile}.options"
@@ -137,17 +137,17 @@ class bind::params {
 
     #init.d default config file
     $initconfigfile = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => "/etc/default/bind9",
+        /(?i-mx:ubuntu|debian)/ => '/etc/default/bind9',
         default => '/etc/sysconfig/named',
     }
 
     # Base directory for Bind
     $basedir = $::operatingsystem ?  {
-        /(?i-mx:ubuntu|debian)/ => "/var/cache/bind",
+        /(?i-mx:ubuntu|debian)/ => '/var/cache/bind',
         default => '/var/named',
     }
 
-    # PID file 
+    # PID file
     $pidfile = $::operatingsystem ?  {
         /(?i-mx:ubuntu|debian)/ => '/var/run/bind/named.pid',
         default => '/var/run/named.pid',
@@ -166,4 +166,3 @@ class bind::params {
 
 
 }
-

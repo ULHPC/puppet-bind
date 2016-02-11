@@ -15,7 +15,7 @@
 
 include 'bind::params'
 
-$names = ["ensure", "protocol", "port", "packagename"]
+$names = ['ensure', 'protocol', 'port', 'packagename']
 
 notice("bind::params::ensure = ${bind::params::ensure}")
 notice("bind::params::protocol = ${bind::params::protocol}")

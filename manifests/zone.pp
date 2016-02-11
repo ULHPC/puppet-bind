@@ -154,12 +154,12 @@ define bind::zone(
     }
 
     if (
-         ($zone_type == 'slave'  and
-         ($masters == '' or $slaves != '' ))
-       or
-         ($zone_type == 'master' and
-         $masters != '')
-       )
+          ($zone_type == 'slave'  and
+          ($masters == '' or $slaves != '' ))
+        or
+          ($zone_type == 'master' and
+          $masters != '')
+        )
     {
         fail("Inconsistent use of zone_type (${zone_type}), slaves (${slaves}) and masters (${masters}) parameters")
     }
@@ -188,18 +188,18 @@ define bind::zone(
     if ($bind::ensure == 'present') {
 
         concat::fragment { "configure bind zone ${zonename}":
-            target  => "${bind::params::localconfigfile}",
-            ensure  => "${ensure}",
-            content => template("bind/custom_zone.erb"),
-            order   => "${priority}",
+            ensure  => $ensure,
+            target  => $bind::params::localconfigfile,
+            content => template('bind/custom_zone.erb'),
+            order   => $priority,
         }
 
         if ($zone_type == 'master') {
             file { "${bind::params::configdir}/zones/${zonefile}":
-                ensure  => "${ensure}",
-                owner   => "${bind::params::user}",
-                group   => "${bind::params::group}",
-                mode    => "${bind::params::configfile_mode}",
+                ensure  => $ensure,
+                owner   => $bind::params::user,
+                group   => $bind::params::group,
+                mode    => $bind::params::configfile_mode,
                 content => $real_content,
                 source  => $real_source,
                 notify  => Service['bind']
@@ -207,8 +207,8 @@ define bind::zone(
         }
 
         if ($add_to_resolver) {
-            bind::resolver { "${zonename}":
-                ensure     => "${ensure}",
+            bind::resolver { $zonename:
+                ensure     => $ensure,
                 nameserver => '127.0.0.1',
                 order      => '01',
                 notify     => Service['bind']
