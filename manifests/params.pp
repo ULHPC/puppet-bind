@@ -67,7 +67,8 @@ class bind::params {
         default                 => 'bind',
     }
     $utils_packages = $::operatingsystem ? {
-        default => [ 'nslint' ]
+        /(?i-mx:ubuntu|debian)/ => [ 'nslint' ],
+        default                 => [],
     }
 
     # The User running bind
