@@ -1,0 +1,51 @@
+{
+  "name": "ULHPC/bind",
+  "version": "0.1.3",
+  "author": "S. Varrette, H. Cartiaux, V. Plugaru, S. Diehl aka. UL HPC Management Team",
+  "mail": "hpc-sysadmins@uni.lu",
+  "summary": "Configure and manage bind",
+  "description": "Configure and manage bind",
+  "license": "GPL-3.0",
+  "source": "https://github.com/ULHPC/puppet-bind",
+  "docs_project": "ulhpc-puppet-bind",
+  "project_page": "https://github.com/ULHPC/puppet-bind",
+  "issues_url": "https://github.com/ULHPC/puppet-bind/issues",
+  "forge_url": "https://forge.puppetlabs.com/ULHPC/bind",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">=4.2.2 <5.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=2.0.0"
+    },
+    {
+      "name": "ULHPC/syslog",
+      "version_requirement": ">=0.1.2"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "tags": [
+    "bind"
+  ],
+  "classes": [
+    "bind",
+    "bind::common",
+    "bind::debian",
+    "bind::params",
+    "bind::redhat"
+  ],
+  "definitions": [
+    "bind::resolver",
+    "bind::zone"
+  ]
+}
