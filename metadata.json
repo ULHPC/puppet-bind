@@ -15,6 +15,14 @@
     {
       "name": "puppetlabs-stdlib",
       "version_requirement": ">=4.2.2 <5.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=2.0.0"
+    },
+    {
+      "name": "ULHPC/syslog",
+      "version_requirement": ">=0.1.2"
     }
   ],
   "operatingsystem_support": [
@@ -26,5 +34,18 @@
       ]
     }
   ],
-  "tags": ["bind"]
+  "tags": [
+    "bind"
+  ],
+  "classes": [
+    "bind",
+    "bind::common",
+    "bind::debian",
+    "bind::params",
+    "bind::redhat"
+  ],
+  "definitions": [
+    "bind::resolver",
+    "bind::zone"
+  ]
 }
