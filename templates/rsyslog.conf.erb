@@ -1,0 +1,4 @@
+# Tell rsyslog to listen for log events linked to bind in the chroot
+$AddUnixListenSocket <%= scope.lookupvar('bind::params::chrootdir') %>/dev/log
+if $syslogtag contains 'named' then <%= scope.lookupvar('bind::params::logdir') %>/bind.log
+& ~
