@@ -94,7 +94,7 @@ class bind::common {
         }
 
         # Prepare the local zone file
-        include concat::setup
+        #include concat::setup
         concat { $bind::params::localconfigfile:
             warn    => true,
             owner   => $bind::params::configfile_owner,
@@ -106,7 +106,6 @@ class bind::common {
 
         # Header of the file
         concat::fragment { 'named.conf.local_header':
-            ensure => $bind::ensure,
             target => $bind::params::localconfigfile,
             source => 'puppet:///modules/bind/01-named.conf.local_header',
             order  => 01,
@@ -115,7 +114,6 @@ class bind::common {
 
         # Footer of the file
         concat::fragment { 'named.conf.local_footer':
-            ensure => $bind::ensure,
             target => $bind::params::localconfigfile,
             source => 'puppet:///modules/bind/99-named.conf.local_footer',
             order  => 99,

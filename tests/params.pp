@@ -15,7 +15,7 @@
 
 include 'bind::params'
 
-$names = ["ensure", "protocol", "port", "forwarders", "allow_query", "packagename", "utils_packages", "user", "group", "servicename", "processname", "hasstatus", "hasrestart", "chrootdir", "configdir", "configdir_mode", "configfile", "configfile_mode", "configfile_owner", "configfile_group", "localconfigfile", "optionsfile", "initconfigfile", "basedir", "pidfile", "logdir"]
+$names = ['ensure', 'protocol', 'port', 'forwarders', 'allow_query', 'packagename', 'utils_packages', 'user', 'group', 'servicename', 'processname', 'hasstatus', 'hasrestart', 'chrootdir', 'configdir', 'configdir_mode', 'configfile', 'configfile_mode', 'configfile_owner', 'configfile_group', 'localconfigfile', 'optionsfile', 'initconfigfile', 'basedir', 'pidfile', 'logdir']
 
 notice("bind::params::ensure = ${bind::params::ensure}")
 notice("bind::params::protocol = ${bind::params::protocol}")
