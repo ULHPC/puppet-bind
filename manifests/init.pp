@@ -56,7 +56,7 @@ inherits bind::params
         debian, ubuntu:         { include bind::debian }
         redhat, fedora, centos: { include bind::redhat }
         default: {
-            fail("Module $module_name is not supported on $operatingsystem")
+            fail("Module ${::module_name} is not supported on ${::operatingsystem}")
         }
     }
 }

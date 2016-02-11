@@ -68,18 +68,18 @@ define bind::resolver(
     # First checks
     if (! defined( Concat['/etc/resolv.conf'] ) ) {
         # backup resolv.conf
-        exec { "cp /etc/resolv.conf /etc/resolv.conf.old":
-            path   => "/usr/bin:/usr/sbin:/bin",
-            unless => "test -f /etc/resolv.conf.old",
+        exec { 'cp /etc/resolv.conf /etc/resolv.conf.old':
+            path   => '/usr/bin:/usr/sbin:/bin',
+            unless => 'test -f /etc/resolv.conf.old',
             notify => Concat['/etc/resolv.conf']
         }
 
         include concat::setup
         concat { '/etc/resolv.conf':
-            warn    => true,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
+            warn  => true,
+            owner => 'root',
+            group => 'root',
+            mode  => '0644',
         }
     }
 
@@ -89,10 +89,10 @@ define bind::resolver(
     }
 
     concat::fragment { "/etc/resolv.conf_${domain_name}":
+        ensure  => $ensure,
         target  => '/etc/resolv.conf',
-        content => template("bind/resolv.conf.part.erb"),
-        ensure  => "${ensure}",
-        order   => "${order}",
+        content => template('bind/resolv.conf.part.erb'),
+        order   => $order,
     }
 
 
