@@ -30,33 +30,18 @@ class bind::params {
     ###########################################
 
     # ensure the presence (or absence) of bind
-    $ensure = $::bind_ensure ? {
-        ''      => 'present',
-        default => $::bind_ensure
-    }
+    $ensure = 'present'
 
     # The Protocol used. Used by monitor and firewall class. Default is 'tcp'
-    $protocol = $::bind_protocol ? {
-        ''      => 'tcp',
-        default => $::bind_protocol,
-    }
+    $protocol = 'tcp'
     # The port number. Used by monitor and firewall class. The default is 22.
-    $port = $::bind_port ? {
-        ''      => 53,
-        default => $::bind_port,
-    }
+    $port = 53
 
     # Define global forwarders. Can be an array
-    $forwarders = $::bind_forwarders ? {
-        ''      => [ '10.21.0.5' ],
-        default => $::bind_forwarders,
-    }
+    $forwarders = [ '10.21.0.5' ]
 
     # clients authorized for querying the server; can be an array
-    $allow_query = $::bind_allow_query ? {
-        ''      => '',
-        default => $::bind_allow_query,
-    }
+    $allow_query = ''
 
     #### MODULE INTERNAL VARIABLES  #########
     # (Modify to adapt to unsupported OSes)
@@ -158,12 +143,5 @@ class bind::params {
     $logdir = $::operatingsystem ?  {
         default => '/var/log',
     }
-
-    # $pkgmanager = $::operatingsystem ? {
-    #     /(?i-mx:ubuntu|debian)/          => [ '/usr/bin/apt-get' ],
-    #     /(?i-mx:centos|fedora|redhat)/ => [ '/bin/rpm', '/usr/bin/up2date', '/usr/bin/yum' ],
-    #     default => []
-    # }
-
 
 }
