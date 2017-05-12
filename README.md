@@ -9,7 +9,7 @@
 
 Configure and manage bind
 
-      Copyright (c) 2016 S. Varrette, H. Cartiaux, V. Plugaru, S. Diehl aka. UL HPC Management Team <hpc-sysadmins@uni.lu>
+      Copyright (c) 2017 S. Varrette, H. Cartiaux, V. Plugaru, S. Diehl aka. UL HPC Management Team <hpc-sysadmins@uni.lu>
       
 
 | [Project Page](https://github.com/ULHPC/puppet-bind) | [Sources](https://github.com/ULHPC/puppet-bind) | [Documentation](https://ulhpc-puppet-bind.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/puppet-bind/issues) |
@@ -21,8 +21,15 @@ Configure and manage bind.
 This module implements the following elements: 
 
 * __Puppet classes__:
+    - `bind` 
+    - `bind::common` 
+    - `bind::debian` 
+    - `bind::params` 
+    - `bind::redhat` 
 
 * __Puppet definitions__: 
+    - `bind::resolver` 
+    - `bind::zone` 
 
 All these components are configured through a set of variables you will find in
 [`manifests/params.pp`](manifests/params.pp). 
@@ -35,6 +42,8 @@ See `docs/contributing.md` for more details on the steps you shall follow to hav
 See [`metadata.json`](metadata.json). In particular, this module depends on 
 
 * [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
+* [puppetlabs/concat](https://forge.puppetlabs.com/puppetlabs/concat)
+* [ULHPC/syslog](https://forge.puppetlabs.com/ULHPC/syslog)
 
 ## Overview and Usage
 
@@ -51,6 +60,46 @@ Use it as follows:
 
 See also [`tests/init.pp`](tests/init.pp)
 
+### Class `bind::debian`
+
+See [`tests/debian.pp`](tests/debian.pp)
+### Class `bind::redhat`
+
+See [`tests/redhat.pp`](tests/redhat.pp)
+
+### Definition `bind::resolver`
+
+The definition `bind::resolver` provides ...
+This definition accepts the following parameters:
+
+* `$ensure`: default to 'present', can be 'absent'
+* `$content`: specify the contents of the directive as a string
+* `$source`: copy a file as the content of the directive.
+
+Example:
+
+        bind::resolver { 'toto':
+		      ensure => 'present',
+        }
+
+See also [`tests/resolver.pp`](tests/resolver.pp)
+
+### Definition `bind::zone`
+
+The definition `bind::zone` provides ...
+This definition accepts the following parameters:
+
+* `$ensure`: default to 'present', can be 'absent'
+* `$content`: specify the contents of the directive as a string
+* `$source`: copy a file as the content of the directive.
+
+Example:
+
+        bind::zone { 'toto':
+		      ensure => 'present',
+        }
+
+See also [`tests/zone.pp`](tests/zone.pp)
 
 
 ## Librarian-Puppet / R10K Setup
