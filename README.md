@@ -9,7 +9,7 @@
 
 Configure and manage bind
 
-      Copyright (c) 2017 S. Varrette, H. Cartiaux, V. Plugaru, S. Diehl aka. UL HPC Management Team <hpc-sysadmins@uni.lu>
+      Copyright (c) 2017 UL HPC DevOps Team <hpc-sysadmins@uni.lu>
       
 
 | [Project Page](https://github.com/ULHPC/puppet-bind) | [Sources](https://github.com/ULHPC/puppet-bind) | [Documentation](https://ulhpc-puppet-bind.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/puppet-bind/issues) |
