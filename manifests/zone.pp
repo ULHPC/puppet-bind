@@ -24,16 +24,16 @@
 #
 # [*masters*]
 #   List of master servers by IP, only valid when zone_type = slaves
-#   Default: empty
+#   Default: empty array
 #
 # [*slaves*]
 #   List of slave servers by IP, only valid when zone_type = master
-#   Default: empty
+#   Default: empty array
 #
 # [*forwarders*]
 #   forwarders defines a list of IP address(es) (and optional port numbers) to
 #   which queries will be forwarded.
-#   Default: empty
+#   Default: empty array
 #
 # [*content*]
 #  Specify the contents of the zone configuration as a string. Newlines, tabs,
@@ -99,9 +99,9 @@ define bind::zone(
     $content    = '',
     $source     = '',
     $zone_type  = 'master',
-    $masters    = '',
-    $slaves     = '',
-    $forwarders = '',
+    $masters    = [],
+    $slaves     = [],
+    $forwarders = [],
     $reverse_RR = false,
     $add_to_resolver = false
 )
@@ -155,10 +155,10 @@ define bind::zone(
 
     if (
           ($zone_type == 'slave'  and
-          ($masters == '' or $slaves != '' ))
+          ($masters == [] or $slaves != [] ))
         or
           ($zone_type == 'master' and
-          $masters != '')
+          $masters != [])
         )
     {
         fail("Inconsistent use of zone_type (${zone_type}), slaves (${slaves}) and masters (${masters}) parameters")
