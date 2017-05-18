@@ -131,7 +131,7 @@ class bind::common {
 
         exec { 'mv /etc/bind /etc/bind.old':
             path    => '/usr/bin:/usr/sbin:/bin',
-            unless  => 'test -d /etc/bind.old',
+            unless  => 'test -d /etc/bind.old \\&& test \\! -d /etc/bind',
             require => File[$bind::params::configdir]
         }
         file { '/etc/bind':
