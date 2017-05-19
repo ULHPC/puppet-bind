@@ -119,7 +119,7 @@ define bind::zone(
     }
     else {
         # Reverse name resolution i.e. from IPs to hostname
-        $reverse_ip = inline_template("<%= name.split('.').reverse.join('.') %>")
+        $reverse_ip = inline_template("<%= @name.split('.').reverse.join('.') %>")
         $zonename   = "${reverse_ip}.in-addr.arpa"
         $zonefile   = "reverse-${reverse_ip}.db"
         $priority = 60
