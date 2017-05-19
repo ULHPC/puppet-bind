@@ -1,8 +1,8 @@
-zone "<%= zonename %>" {
-    type <%= zone_type %>;
-    file "/etc/bind/zones/<%= zonefile %>";
+zone "<%= scope.lookupvar('zonename') %>" {
+    type <%= scope.lookupvar('zone_type') %>;
+    file "<%= scope.lookupvar('bind::params::configdir') %>/zones/<%= scope.lookupvar('zonefile') %>";
     forwarders { <% scope.lookupvar('forwarders').each do |fw| %><%= fw %>; <% end %> };
-<% if zone_type == 'master' and slaves != '' -%>
+<% if scope.lookupvar('zone_type') == 'master' and scope.lookupvar('slaves') != '' -%>
     allow-transfer {
       <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
     };
@@ -10,7 +10,7 @@ zone "<%= zonename %>" {
       <% scope.lookupvar('slaves').each do |slaves_ip| %><%= slaves_ip %>;<% end %>
     };
     notify yes;
-<% end -%><% if zone_type == 'slave' -%>
+<% end -%><% if scope.lookupvar('zone_type') == 'slave' -%>
     masters {
       <% scope.lookupvar('masters').each do |masters_ip| %><%= masters_ip %>;<% end %>
     };

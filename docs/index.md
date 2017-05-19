@@ -4,7 +4,7 @@
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/ULHPC/bind.svg)](https://forge.puppetlabs.com/ULHPC/bind)
 [![License](http://img.shields.io/:license-GPL3.0-blue.svg)](LICENSE)
-![Supported Platforms](http://img.shields.io/badge/platform-debian-lightgrey.svg)
+![Supported Platforms](http://img.shields.io/badge/platform-debian|redhat|centos-lightgrey.svg)
 [![Documentation Status](https://readthedocs.org/projects/ulhpc-puppet-bind/badge/?version=latest)](https://readthedocs.org/projects/ulhpc-puppet-bind/?badge=latest)
 
       Copyright (c) 2017 UL HPC DevOps Team <hpc-sysadmins@uni.lu>
