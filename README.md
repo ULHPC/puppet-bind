@@ -4,7 +4,7 @@
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/ULHPC/bind.svg)](https://forge.puppetlabs.com/ULHPC/bind)
 [![License](http://img.shields.io/:license-GPL3.0-blue.svg)](LICENSE)
-![Supported Platforms](http://img.shields.io/badge/platform-debian-lightgrey.svg)
+![Supported Platforms](http://img.shields.io/badge/platform-debian|redhat|centos-lightgrey.svg)
 [![Documentation Status](https://readthedocs.org/projects/ulhpc-puppet-bind/badge/?version=latest)](https://readthedocs.org/projects/ulhpc-puppet-bind/?badge=latest)
 
 Configure and manage bind
@@ -23,9 +23,9 @@ This module implements the following elements:
 * __Puppet classes__:
     - `bind` 
     - `bind::common` 
-    - `bind::debian` 
+    - `bind::common::debian` 
+    - `bind::common::redhat` 
     - `bind::params` 
-    - `bind::redhat` 
 
 * __Puppet definitions__: 
     - `bind::resolver` 
@@ -60,12 +60,6 @@ Use it as follows:
 
 See also [`tests/init.pp`](tests/init.pp)
 
-### Class `bind::debian`
-
-See [`tests/debian.pp`](tests/debian.pp)
-### Class `bind::redhat`
-
-See [`tests/redhat.pp`](tests/redhat.pp)
 
 ### Definition `bind::resolver`
 
