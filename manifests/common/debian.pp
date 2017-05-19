@@ -98,8 +98,8 @@ class bind::common::debian inherits bind::common {
         }
 
         exec {"rm -rf ${bind::params::chrootdir}":
-            path    => '/usr/bin:/usr/sbin:/bin',
-            onlyif  => "test -d ${bind::params::chrootdir}",
+            path   => '/usr/bin:/usr/sbin:/bin',
+            onlyif => "test -d ${bind::params::chrootdir}",
         }
     }
 

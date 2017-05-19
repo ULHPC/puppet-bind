@@ -178,16 +178,16 @@ class bind::common {
     }
     else {
         exec { 'rm -f /etc/bind':
-            path    => '/usr/bin:/usr/sbin:/bin',
-            onlyif  => 'test -h /etc/bind',
+            path   => '/usr/bin:/usr/sbin:/bin',
+            onlyif => 'test -h /etc/bind',
         }
         exec {"rm -rf ${bind::params::configdir}":
-            path    => '/usr/bin:/usr/sbin:/bin',
-            onlyif  => "test -d ${bind::params::configdir}",
+            path   => '/usr/bin:/usr/sbin:/bin',
+            onlyif => "test -d ${bind::params::configdir}",
         }
         exec { 'mv /etc/resolv.conf.old /etc/resolv.conf':
-            path    => '/usr/bin:/usr/sbin:/bin',
-            onlyif  => 'test -f /etc/resolv.conf.old',
+            path   => '/usr/bin:/usr/sbin:/bin',
+            onlyif => 'test -f /etc/resolv.conf.old',
         }
     }
 
