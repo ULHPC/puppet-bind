@@ -48,8 +48,9 @@ class bind::params {
     #######################################
     # Packages to install
     $packagename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'bind9',
-        default                 => 'bind',
+        /(?i-mx:ubuntu|debian)/        => 'bind9',
+        /(?i-mx:centos|redhat|fedora)/ => 'bind-chroot',
+        default                        => 'bind',
     }
     $utils_packages = $::operatingsystem ? {
         /(?i-mx:ubuntu|debian)/ => [ 'nslint' ],
@@ -65,8 +66,9 @@ class bind::params {
 
     # Bind (aka DNS) service
     $servicename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'bind9',
-        default                 => 'named'
+        /(?i-mx:ubuntu|debian)/        => 'bind9',
+        /(?i-mx:centos|redhat|fedora)/ => 'named-chroot',
+        default                        => 'named'
     }
     # used for pattern in a service ressource
     $processname = $::operatingsystem ? {
@@ -83,12 +85,16 @@ class bind::params {
 
     # Chroot dir
     $chrootdir =  $::operatingsystem ? {
-        default => '/var/chroot/bind',
+        /(?i-mx:ubuntu|debian)/        => '/var/chroot/bind',
+        /(?i-mx:centos|fedora|redhat)/ => '/var/named/chroot',
+        default                        => '/var/chroot/bind'
     }
 
     # Configuration directory
     $configdir = $::operatingsystem ? {
-        default => "${chrootdir}/etc/bind",
+        /(?i-mx:ubuntu|debian)/        => "${chrootdir}/etc/bind",
+        /(?i-mx:centos|fedora|redhat)/ => '/etc/named',
+        default                        => '/etc/bind'
     }
     $configdir_mode = $::operatingsystem ? {
         default => '0755',
@@ -96,8 +102,9 @@ class bind::params {
 
     # Bind main configuration file
     $configfile = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => "${chrootdir}/etc/bind/named.conf",
-        default => "${chrootdir}/etc/named.conf"
+        /(?i-mx:ubuntu|debian)/        => "${chrootdir}/etc/bind/named.conf",
+        /(?i-mx:centos|fedora|redhat)/ => '/etc/named.conf',
+        default => '/etc/bind/named.conf'
     }
     $configfile_mode = $::operatingsystem ? {
         default => '0644',
@@ -113,12 +120,15 @@ class bind::params {
 
     # named.conf.local
     $localconfigfile = $::operatingsystem ? {
-        default => "${configfile}.local"
+        default => "${configdir}/named.conf.local"
     }
-
+    # named.conf.default_zones
+    $default_zones_file = $::operatingsystem ? {
+        default => "${configdir}/named.conf.default-zones"
+    }
     # named.conf.options
     $optionsfile = $::operatingsystem ? {
-        default => "${configfile}.options"
+        default => "${configdir}/named.conf.options"
     }
 
     #init.d default config file
@@ -135,8 +145,9 @@ class bind::params {
 
     # PID file
     $pidfile = $::operatingsystem ?  {
-        /(?i-mx:ubuntu|debian)/ => '/var/run/bind/named.pid',
-        default => '/var/run/named.pid',
+        /(?i-mx:ubuntu|debian)/        => '/var/run/bind/named.pid',
+        /(?i-mx:centos|fedora|redhat)/ => '/run/named/named.pid',
+        default                        => '/var/run/named.pid',
     }
 
     # Log dir (log file will be ${logdir}/bind.log

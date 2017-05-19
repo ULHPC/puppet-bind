@@ -1,6 +1,6 @@
 zone "<%= scope.lookupvar('zonename') %>" {
     type <%= scope.lookupvar('zone_type') %>;
-    file "/etc/bind/zones/<%= scope.lookupvar('zonefile') %>";
+    file "<%= scope.lookupvar('bind::params::configdir') %>/zones/<%= scope.lookupvar('zonefile') %>";
     forwarders { <% scope.lookupvar('forwarders').each do |fw| %><%= fw %>; <% end %> };
 <% if scope.lookupvar('zone_type') == 'master' and scope.lookupvar('slaves') != '' -%>
     allow-transfer {
