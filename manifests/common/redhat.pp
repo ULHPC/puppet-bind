@@ -14,8 +14,6 @@ class bind::common::redhat inherits bind::common {
         # copy the bind.keys
         exec { "mv /etc/named.iscdlv.key ${bind::params::configdir}/bind.keys":
             path    => '/usr/bin:/usr/sbin:/bin',
-            user    => $bind::params::user,
-            group   => $bind::params::group,
             onlyif  => 'test -f /etc/named.iscdlv.key',
             unless  => "test -f ${bind::params::configdir}/bind.keys",
             require => File[$bind::params::configdir],
