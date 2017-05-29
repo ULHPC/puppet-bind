@@ -7,15 +7,15 @@ options {
     directory "<%= scope.lookupvar('bind::params::basedir') %>";
     pid-file  "<%= scope.lookupvar('bind::params::pidfile') %>";
 
-<% if @operatingsystem == 'redhat' or @operatingsystem == 'centos' %>
-        dump-file       "/var/named/data/cache_dump.db";
-        statistics-file "/var/named/data/named_stats.txt";
-        memstatistics-file "/var/named/data/named_mem_stats.txt";
+<% if @operatingsystem == 'RedHat' or @operatingsystem == 'CentOS' %>
+        dump-file              "/var/named/data/cache_dump.db";
+        statistics-file        "/var/named/data/named_stats.txt";
+        memstatistics-file     "/var/named/data/named_mem_stats.txt";
         managed-keys-directory "/var/named/dynamic";
-        session-keyfile "/run/named/session.key";
+        session-keyfile        "/run/named/session.key";
 
         /* Path to ISC DLV key */
-        bindkeys-file "/etc/named.iscdlv.key";
+        bindkeys-file          "/etc/named.iscdlv.key";
 <% end%>
 
     // on which interface bind should listen
@@ -57,7 +57,7 @@ options {
 };
 
 
-<% if @operatingsystem == 'redhat' or @operatingsystem == 'centos' %>
+<% if @operatingsystem == 'RedHat' or @operatingsystem == 'CentOS' %>
 logging {
         channel default_debug {
                 file "data/named.run";
