@@ -11,4 +11,6 @@
 
 include "<%= scope.lookupvar('bind::params::configdir') %>/named.conf.options";
 include "<%= scope.lookupvar('bind::params::configdir') %>/named.conf.local";
+<% if @operatingsystem == 'debian' %>
 include "<%= scope.lookupvar('bind::params::configdir') %>/named.conf.default-zones";
+<% end%>

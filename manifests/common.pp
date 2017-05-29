@@ -43,72 +43,6 @@ class bind::common {
             mode   => $bind::params::configdir_mode
         }
 
-        # Create the default zones files
-        file { "${bind::params::configdir}/db.0":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.0',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/db.127":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.127',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/db.255":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.255',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/db.empty":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.empty',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/db.local":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.local',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/db.root":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            source  => 'puppet:///modules/bind/default-zones/db.root',
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        file { "${bind::params::configdir}/zones.rfc1918":
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            content => template('bind/zones.rfc1918.erb'),
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-
-
         # Custom zones directory
         file { "${bind::params::configdir}/zones":
             ensure  => 'directory',
@@ -125,16 +59,6 @@ class bind::common {
             group   => $bind::params::group,
             mode    => $bind::params::configfile_mode,
             content => template('bind/named.conf.erb'),
-            require => File[$bind::params::configdir],
-            notify  => Service['bind']
-        }
-        # Adapt the named.conf.default_zones file
-        file { $bind::params::default_zones_file:
-            ensure  => $bind::ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            content => template('bind/named.conf.default-zones.erb'),
             require => File[$bind::params::configdir],
             notify  => Service['bind']
         }
