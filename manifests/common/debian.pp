@@ -25,6 +25,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.0',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -34,6 +35,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.127',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -43,6 +45,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.255',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -52,6 +55,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.empty',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -61,6 +65,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.local',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -70,6 +75,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.root',
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -79,6 +85,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_conf_t',
         content => template('bind/zones.rfc1918.erb'),
         require => File[$bind::params::configdir],
         notify  => Service['bind']
@@ -90,6 +97,7 @@ class bind::common::debian inherits bind::common {
         owner   => $bind::params::user,
         group   => $bind::params::group,
         mode    => $bind::params::configfile_mode,
+        seltype => 'named_conf_t',
         content => template('bind/named.conf.default-zones.erb'),
         require => File[$bind::params::configdir],
         notify  => Service['bind']

@@ -42,7 +42,8 @@
 class bind(
     $ensure      = $bind::params::ensure,
     $forwarders  = $bind::params::forwarders,
-    $allow_query = $bind::params::allow_query
+    $allow_query = $bind::params::allow_query,
+    $dnssec      = $bind::params::dnssec
 )
 inherits bind::params
 {
