@@ -22,7 +22,14 @@ class bind::common {
         ensure  => $bind::ensure,
     }
 
+
     if ($bind::ensure == 'present') {
+
+        if ($facts['os']['selinux']['enabled'] == true) {
+            selinux::boolean { 'named_write_master_zones': }
+        }
+
+
         # Release the BIND service
         service { 'bind':
             ensure     => running,
@@ -58,6 +65,7 @@ class bind::common {
             owner   => $bind::params::user,
             group   => $bind::params::group,
             mode    => $bind::params::configfile_mode,
+            seltype => 'named_conf_t',
             content => template('bind/named.conf.erb'),
             require => File[$bind::params::configdir],
             notify  => Service['bind']
@@ -68,6 +76,7 @@ class bind::common {
             owner   => $bind::params::user,
             group   => $bind::params::group,
             mode    => $bind::params::configfile_mode,
+            seltype => 'named_conf_t',
             content => template('bind/named.conf.options.erb'),
             require => File[$bind::params::configdir],
             notify  => Service['bind']
@@ -79,6 +88,7 @@ class bind::common {
             owner   => $bind::params::configfile_owner,
             group   => $bind::params::configfile_group,
             mode    => $bind::params::configfile_mode,
+            seltype => 'named_conf_t',
             require => File[$bind::params::configdir],
             notify  => Service['bind']
         }

@@ -200,6 +200,7 @@ define bind::zone(
                 owner   => $bind::params::user,
                 group   => $bind::params::group,
                 mode    => $bind::params::configfile_mode,
+                seltype => 'named_zone_t',
                 content => $real_content,
                 source  => $real_source,
                 notify  => Service['bind']
