@@ -43,6 +43,9 @@ class bind::params {
     # clients authorized for querying the server; can be an array
     $allow_query = ''
 
+    # enable or disable dnssec, disabled by default
+    $dnssec = false
+
     #### MODULE INTERNAL VARIABLES  #########
     # (Modify to adapt to unsupported OSes)
     #######################################
