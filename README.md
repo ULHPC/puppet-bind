@@ -43,6 +43,7 @@ See [`metadata.json`](metadata.json). In particular, this module depends on
 
 * [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
 * [puppetlabs/concat](https://forge.puppetlabs.com/puppetlabs/concat)
+* [puppet/selinux](https://forge.puppetlabs.com/puppet/selinux)
 * [ULHPC/syslog](https://forge.puppetlabs.com/ULHPC/syslog)
 
 ## Overview and Usage
