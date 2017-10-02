@@ -194,16 +194,19 @@ define bind::zone(
             order   => $priority,
         }
 
+        file { "${bind::params::configdir}/zones/${zonefile}":
+            ensure  => $ensure,
+            owner   => $bind::params::user,
+            group   => $bind::params::group,
+            mode    => $bind::params::configfile_mode,
+            seltype => 'named_zone_t',
+            notify  => Service['bind']
+        }
+
         if ($zone_type == 'master') {
-            file { "${bind::params::configdir}/zones/${zonefile}":
-                ensure  => $ensure,
-                owner   => $bind::params::user,
-                group   => $bind::params::group,
-                mode    => $bind::params::configfile_mode,
-                seltype => 'named_zone_t',
+            File["${bind::params::configdir}/zones/${zonefile}"] {
                 content => $real_content,
                 source  => $real_source,
-                notify  => Service['bind']
             }
         }
 
