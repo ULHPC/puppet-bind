@@ -59,7 +59,7 @@ define bind::resolver(
     $ensure     = 'present'
 )
 {
-    include bind::params
+    include ::bind::params
 
     # $name is provided by define invocation
     # guid of this entry
@@ -71,10 +71,10 @@ define bind::resolver(
         exec { 'cp /etc/resolv.conf /etc/resolv.conf.old':
             path   => '/usr/bin:/usr/sbin:/bin',
             unless => 'test -f /etc/resolv.conf.old',
-            notify => Concat['/etc/resolv.conf']
+            notify => Concat['/etc/resolv.conf'],
         }
 
-        include concat::setup
+        include ::concat::setup
         concat { '/etc/resolv.conf':
             warn  => true,
             owner => 'root',

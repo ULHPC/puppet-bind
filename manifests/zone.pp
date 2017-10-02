@@ -106,7 +106,7 @@ define bind::zone(
     $add_to_resolver = false
 )
 {
-    include bind::params
+    include ::bind::params
 
     # $name is provided by define invocation
     # guid of this entry
@@ -200,7 +200,7 @@ define bind::zone(
             group   => $bind::params::group,
             mode    => $bind::params::configfile_mode,
             seltype => 'named_zone_t',
-            notify  => Service['bind']
+            notify  => Service['bind'],
         }
 
         if ($zone_type == 'master') {
@@ -215,7 +215,7 @@ define bind::zone(
                 ensure     => $ensure,
                 nameserver => '127.0.0.1',
                 order      => '01',
-                notify     => Service['bind']
+                notify     => Service['bind'],
             }
         }
 
