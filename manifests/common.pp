@@ -12,7 +12,7 @@
 class bind::common {
 
     # Load the variables used in this module. Check the bind-params.pp file
-    require bind::params
+    require ::bind::params
 
     package { 'bind':
         ensure => $bind::ensure,
@@ -39,7 +39,7 @@ class bind::common {
             pattern    => $bind::params::processname,
             hasstatus  => $bind::params::hasstatus,
             require    => Package['bind'],
-            notify     => Service['syslog']
+            notify     => Service['syslog'],
         }
 
         # Now populate the configuration directory with the default files
@@ -47,7 +47,7 @@ class bind::common {
             ensure => 'directory',
             owner  => $bind::params::user,
             group  => $bind::params::group,
-            mode   => $bind::params::configdir_mode
+            mode   => $bind::params::configdir_mode,
         }
 
         # Custom zones directory
@@ -68,7 +68,7 @@ class bind::common {
             seltype => 'named_conf_t',
             content => template('bind/named.conf.erb'),
             require => File[$bind::params::configdir],
-            notify  => Service['bind']
+            notify  => Service['bind'],
         }
         # Adapt the named.conf.options files
         file { $bind::params::optionsfile:
@@ -79,7 +79,7 @@ class bind::common {
             seltype => 'named_conf_t',
             content => template('bind/named.conf.options.erb'),
             require => File[$bind::params::configdir],
-            notify  => Service['bind']
+            notify  => Service['bind'],
         }
 
         # Prepare the local zone file
@@ -90,14 +90,14 @@ class bind::common {
             mode    => $bind::params::configfile_mode,
             seltype => 'named_conf_t',
             require => File[$bind::params::configdir],
-            notify  => Service['bind']
+            notify  => Service['bind'],
         }
 
         # Header of the file
         concat::fragment { 'named.conf.local_header':
             target => $bind::params::localconfigfile,
             source => 'puppet:///modules/bind/01-named.conf.local_header',
-            order  => 01,
+            order  => '01',
         }
 
 
@@ -126,10 +126,10 @@ class bind::common {
     }
 
     # Adapt syslog configuration
-    require syslog
+    require ::syslog
     syslog::conf { 'bind-chroot':
         ensure  => $bind::ensure,
-        content => template('bind/rsyslog.conf.erb')
+        content => template('bind/rsyslog.conf.erb'),
     }
 
 }

@@ -106,7 +106,7 @@ define bind::zone(
     $add_to_resolver = false
 )
 {
-    include bind::params
+    include ::bind::params
 
     # $name is provided by define invocation
     # guid of this entry
@@ -194,16 +194,19 @@ define bind::zone(
             order   => $priority,
         }
 
+        file { "${bind::params::configdir}/zones/${zonefile}":
+            ensure  => $ensure,
+            owner   => $bind::params::user,
+            group   => $bind::params::group,
+            mode    => $bind::params::configfile_mode,
+            seltype => 'named_zone_t',
+            notify  => Service['bind'],
+        }
+
         if ($zone_type == 'master') {
-            file { "${bind::params::configdir}/zones/${zonefile}":
-                ensure  => $ensure,
-                owner   => $bind::params::user,
-                group   => $bind::params::group,
-                mode    => $bind::params::configfile_mode,
-                seltype => 'named_zone_t',
+            File["${bind::params::configdir}/zones/${zonefile}"] {
                 content => $real_content,
                 source  => $real_source,
-                notify  => Service['bind']
             }
         }
 
@@ -212,7 +215,7 @@ define bind::zone(
                 ensure     => $ensure,
                 nameserver => '127.0.0.1',
                 order      => '01',
-                notify     => Service['bind']
+                notify     => Service['bind'],
             }
         }
 

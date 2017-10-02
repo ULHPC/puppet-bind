@@ -16,7 +16,7 @@ class bind::common::debian inherits bind::common {
         group   => $bind::params::group,
         onlyif  => 'test -f /etc/bind.old/bind.keys',
         unless  => "test -f ${bind::params::configdir}/bind.keys",
-        require => Exec['mv /etc/bind /etc/bind.old']
+        require => Exec['mv /etc/bind /etc/bind.old'],
     }
 
     # Create the default zones files
@@ -28,7 +28,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.0',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/db.127":
         ensure  => $bind::ensure,
@@ -38,7 +38,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.127',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/db.255":
         ensure  => $bind::ensure,
@@ -48,7 +48,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.255',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/db.empty":
         ensure  => $bind::ensure,
@@ -58,7 +58,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.empty',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/db.local":
         ensure  => $bind::ensure,
@@ -68,7 +68,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.local',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/db.root":
         ensure  => $bind::ensure,
@@ -78,7 +78,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_zone_t',
         source  => 'puppet:///modules/bind/default-zones/db.root',
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
     file { "${bind::params::configdir}/zones.rfc1918":
         ensure  => $bind::ensure,
@@ -88,7 +88,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_conf_t',
         content => template('bind/zones.rfc1918.erb'),
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
 
     # Adapt the named.conf.default_zones file
@@ -100,7 +100,7 @@ class bind::common::debian inherits bind::common {
         seltype => 'named_conf_t',
         content => template('bind/named.conf.default-zones.erb'),
         require => File[$bind::params::configdir],
-        notify  => Service['bind']
+        notify  => Service['bind'],
     }
 
 
@@ -110,28 +110,28 @@ class bind::common::debian inherits bind::common {
         exec { "Creates ${bind::params::chrootdir}":
             command => "mkdir -p ${bind::params::chrootdir}",
             path    => '/usr/bin:/usr/sbin:/bin',
-            require => Package['bind']
+            require => Package['bind'],
         }
 
         exec { 'Populate chroot directory':
             cwd     => $bind::params::chrootdir,
             command => 'mkdir -p etc/bind dev var/cache/bind var/run/bind/run',
             path    => '/usr/bin:/usr/sbin:/bin',
-            require => Exec["Creates ${bind::params::chrootdir}"]
+            require => Exec["Creates ${bind::params::chrootdir}"],
         }
 
         exec { "create ${bind::params::chrootdir}/dev/null":
             command => "mknod ${bind::params::chrootdir}/dev/null c 1 3 && chmod 666 ${bind::params::chrootdir}/dev/null",
             path    => '/usr/bin:/usr/sbin:/bin',
             creates => "${bind::params::chrootdir}/dev/null",
-            require => Exec['Populate chroot directory']
+            require => Exec['Populate chroot directory'],
         }
 
         exec { "create ${bind::params::chrootdir}/dev/random":
             command => "mknod ${bind::params::chrootdir}/dev/random c 1 8 && chmod 666 ${bind::params::chrootdir}/dev/random",
             path    => '/usr/bin:/usr/sbin:/bin',
             creates => "${bind::params::chrootdir}/dev/random",
-            require => Exec['Populate chroot directory']
+            require => Exec['Populate chroot directory'],
         }
 
         exec { "Set ownership of ${bind::params::chrootdir}":
@@ -140,7 +140,7 @@ class bind::common::debian inherits bind::common {
             require => [
                         Exec["create ${bind::params::chrootdir}/dev/null"],
                         Exec["create ${bind::params::chrootdir}/dev/random"]
-                        ]
+                        ],
         } -> File[$bind::params::configdir]
 
 
@@ -157,12 +157,12 @@ class bind::common::debian inherits bind::common {
         exec { 'mv /etc/bind /etc/bind.old':
             path    => '/usr/bin:/usr/sbin:/bin',
             unless  => 'test -d /etc/bind.old \\&& test \\! -d /etc/bind',
-            require => File[$bind::params::configdir]
+            require => File[$bind::params::configdir],
         }
         file { '/etc/bind':
             ensure  => 'link',
             target  => $bind::params::configdir,
-            require => Exec['mv /etc/bind /etc/bind.old']
+            require => Exec['mv /etc/bind /etc/bind.old'],
         }
         # copy the rndc.key
         exec { "cp /etc/bind.old/rndc.key ${bind::params::configdir}/":
@@ -171,14 +171,14 @@ class bind::common::debian inherits bind::common {
             group   => $bind::params::group,
             onlyif  => 'test -f /etc/bind.old/rndc.key',
             unless  => "test -f ${bind::params::configdir}/rndc.key",
-            require => Exec['mv /etc/bind /etc/bind.old']
+            require => Exec['mv /etc/bind /etc/bind.old'],
         }
     }
     else {
         exec { 'mv /etc/bind.old /etc/bind':
             path    => '/usr/bin:/usr/sbin:/bin',
             onlyif  => 'test -d /etc/bind.old',
-            require => Exec['rm -f /etc/bind']
+            require => Exec['rm -f /etc/bind'],
         }
 
         exec {"rm -rf ${bind::params::chrootdir}":
@@ -194,13 +194,13 @@ class bind::common::debian inherits bind::common {
             command => "mkdir -p ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu",
             path    => '/usr/bin:/usr/sbin:/bin',
             unless  => "test -d ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu",
-            require => Exec['Populate chroot directory']
+            require => Exec['Populate chroot directory'],
         }
         exec { "Import libssl in ${bind::params::chrootdir}":
             command => "cp -R /usr/lib/x86_64-linux-gnu/openssl-1.0.0 ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu/",
             path    => '/usr/bin:/usr/sbin:/bin',
             unless  => "test -d ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu/openssl-1.0.0",
-            require => Exec["Create ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu"]
+            require => Exec["Create ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu"],
         }
 
         Service['bind'] {
