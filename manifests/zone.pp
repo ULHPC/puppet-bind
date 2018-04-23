@@ -46,7 +46,7 @@
 #  URIs. Currently supported URI types are puppet and file.
 #  If content was not specified, you are expected to use the source
 #
-# [*reverse_RR*]
+# [*reverse_rr*]
 #  Whether or not a Ressources Records (RR) for the reverse resolution is
 #  provided. In this case, you are expected to put as name $name for this
 #  definition the base IP of the network NOT IN THE REVERSE ORDER. See the
@@ -55,7 +55,7 @@
 # [*add_to_resolver*]
 #   add this domain to /etc/resolv.conf, associated to the nameserver
 #   '127.0.0.1'. This is not compatible with a reverse resolution i.e. is
-#   reverse_RR is true.
+#   reverse_rr is true.
 #
 # == Requires:
 #   $content or $source must be set (may be except in 'forward' mode )
@@ -102,7 +102,7 @@ define bind::zone(
     $masters    = [],
     $slaves     = [],
     $forwarders = [],
-    $reverse_RR = false,
+    $reverse_rr = false,
     $add_to_resolver = false
 )
 {
@@ -110,7 +110,7 @@ define bind::zone(
 
     # $name is provided by define invocation
     # guid of this entry
-    if (! $reverse_RR ) {
+    if (! $reverse_rr ) {
         # Classical mode: you define the Ressources Records (RR) for the regular
         # name resolution i.e. from hostname to IP
         $zonename = $name
@@ -178,7 +178,7 @@ define bind::zone(
     }
 
     # check
-    if ($reverse_RR) and ($add_to_resolver) {
+    if ($reverse_rr) and ($add_to_resolver) {
         fail("${name}: Cannot have a reverse zone set to be added to /etc/resolv.conf")
     }
 
