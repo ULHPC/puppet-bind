@@ -1,7 +1,7 @@
 {
   "name": "ULHPC/bind",
-  "version": "0.2.6",
-  "author": "UL HPC DevOps Team",
+  "version": "0.2.7",
+  "author": "UL HPC Team",
   "mail": "hpc-sysadmins@uni.lu",
   "summary": "Configure and manage bind",
   "description": "Configure and manage bind",
