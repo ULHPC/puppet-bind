@@ -186,6 +186,11 @@ define bind::zone(
     info("Manage the custom bind zone ${zonename} of type ${zone_type} (with ensure = ${ensure})")
 
     if ($bind::ensure == 'present') {
+        if ($zone_type == 'slave' and $::operatingsystem in [ 'CentOS', 'RedHat' ]) {
+            $zone_file_path = "slaves/${zonefile}"
+        } else {
+            $zone_file_path = "${bind::params::configdir}/zones/${zonefile}"
+        }
 
         concat::fragment { "configure bind zone ${zonename}":
             ensure  => $ensure,
@@ -194,19 +199,16 @@ define bind::zone(
             order   => $priority,
         }
 
-        file { "${bind::params::configdir}/zones/${zonefile}":
-            ensure  => $ensure,
-            owner   => $bind::params::user,
-            group   => $bind::params::group,
-            mode    => $bind::params::configfile_mode,
-            seltype => 'named_zone_t',
-            notify  => Service['bind'],
-        }
-
         if ($zone_type == 'master') {
-            File["${bind::params::configdir}/zones/${zonefile}"] {
+            file { $zone_file_path:
+                ensure  => $ensure,
+                owner   => $bind::params::user,
+                group   => $bind::params::group,
+                mode    => $bind::params::configfile_mode,
+                seltype => 'named_zone_t',
                 content => $real_content,
                 source  => $real_source,
+                notify  => Service['bind'],
             }
         }
 
