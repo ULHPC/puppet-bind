@@ -12,7 +12,7 @@
 class bind::common {
 
     # Load the variables used in this module. Check the bind-params.pp file
-    require ::bind::params
+    require bind::params
 
     package { 'bind':
         ensure => $bind::ensure,
@@ -126,7 +126,7 @@ class bind::common {
     }
 
     # Adapt syslog configuration
-    require ::syslog
+    require syslog
     syslog::conf { 'bind-chroot':
         ensure  => $bind::ensure,
         content => template('bind/rsyslog.conf.erb'),

@@ -106,7 +106,7 @@ define bind::zone(
     $add_to_resolver = false
 )
 {
-    include ::bind::params
+    include bind::params
 
     # $name is provided by define invocation
     # guid of this entry

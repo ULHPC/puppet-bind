@@ -59,7 +59,7 @@ define bind::resolver(
     $ensure     = 'present'
 )
 {
-    include ::bind::params
+    include bind::params
 
     # $name is provided by define invocation
     # guid of this entry
@@ -74,7 +74,7 @@ define bind::resolver(
             notify => Concat['/etc/resolv.conf'],
         }
 
-        include ::concat::setup
+        include concat::setup
         concat { '/etc/resolv.conf':
             warn  => true,
             owner => 'root',
