@@ -39,7 +39,7 @@ class bind::common {
             pattern    => $bind::params::processname,
             hasstatus  => $bind::params::hasstatus,
             require    => Package['bind'],
-            notify     => Service['syslog'],
+            notify     => Service['rsyslog'],
         }
 
         # Now populate the configuration directory with the default files
@@ -126,8 +126,10 @@ class bind::common {
     }
 
     # Adapt syslog configuration
-    require syslog
-    syslog::conf { 'bind-chroot':
+    if ! defined(Class['rsyslog::client']) {
+        class { 'rsyslog::client': }
+    }
+    rsyslog::snippet { 'bind-chroot':
         ensure  => $bind::ensure,
         content => template('bind/rsyslog.conf.erb'),
     }
