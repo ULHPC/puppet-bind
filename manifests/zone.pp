@@ -193,7 +193,6 @@ define bind::zone(
         }
 
         concat::fragment { "configure bind zone ${zonename}":
-            ensure  => $ensure,
             target  => $bind::params::localconfigfile,
             content => template('bind/custom_zone.erb'),
             order   => $priority,
