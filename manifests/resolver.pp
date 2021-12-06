@@ -89,7 +89,6 @@ define bind::resolver(
     }
 
     concat::fragment { "/etc/resolv.conf_${domain_name}":
-        ensure  => $ensure,
         target  => '/etc/resolv.conf',
         content => template('bind/resolv.conf.part.erb'),
         order   => $order,

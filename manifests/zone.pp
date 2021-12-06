@@ -201,7 +201,6 @@ define bind::zone(
 
         if ($zone_type == 'master') {
             file { $zone_file_path:
-                ensure  => $ensure,
                 owner   => $bind::params::user,
                 group   => $bind::params::group,
                 mode    => $bind::params::configfile_mode,
