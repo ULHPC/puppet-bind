@@ -54,8 +54,8 @@ inherits bind::params
     }
 
     case $::operatingsystem {
-        'debian', 'ubuntu':         { include bind::common::debian }
-        'redhat', 'fedora', 'centos': { include bind::common::redhat }
+        'debian', 'ubuntu':                    { include bind::common::debian }
+        'redhat', 'fedora', 'centos', 'rocky': { include bind::common::redhat }
         default: {
             fail("Module ${::module_name} is not supported on ${::operatingsystem}")
         }
