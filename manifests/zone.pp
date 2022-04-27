@@ -186,7 +186,7 @@ define bind::zone(
     info("Manage the custom bind zone ${zonename} of type ${zone_type} (with ensure = ${ensure})")
 
     if ($bind::ensure == 'present') {
-        if ($zone_type == 'slave' and $::operatingsystem in [ 'CentOS', 'RedHat' ]) {
+        if ($zone_type == 'slave' and $::operatingsystem in [ 'CentOS', 'RedHat', 'Rocky' ]) {
             $zone_file_path = "slaves/${zonefile}"
         } else {
             $zone_file_path = "${bind::params::configdir}/zones/${zonefile}"

@@ -51,9 +51,9 @@ class bind::params {
     #######################################
     # Packages to install
     $packagename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => 'bind9',
-        /(?i-mx:centos|redhat|fedora)/ => 'bind-chroot',
-        default                        => 'bind',
+        /(?i-mx:ubuntu|debian)/              => 'bind9',
+        /(?i-mx:centos|redhat|rocky|fedora)/ => 'bind-chroot',
+        default                              => 'bind',
     }
     $utils_packages = $::operatingsystem ? {
         /(?i-mx:ubuntu|debian)/ => [ 'nslint' ],
@@ -69,9 +69,9 @@ class bind::params {
 
     # Bind (aka DNS) service
     $servicename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => 'bind9',
-        /(?i-mx:centos|redhat|fedora)/ => 'named-chroot',
-        default                        => 'named'
+        /(?i-mx:ubuntu|debian)/              => 'bind9',
+        /(?i-mx:centos|redhat|rocky|fedora)/ => 'named-chroot',
+        default                              => 'named'
     }
     # used for pattern in a service ressource
     $processname = $::operatingsystem ? {
@@ -79,7 +79,7 @@ class bind::params {
     }
     $hasstatus = $::operatingsystem ? {
         /(?i-mx:ubuntu|debian)/        => false,
-        /(?i-mx:centos|fedora|redhat)/ => true,
+        /(?i-mx:centos|fedora|redhat|rocky)/ => true,
         default => true,
     }
     $hasrestart = $::operatingsystem ? {
@@ -88,16 +88,16 @@ class bind::params {
 
     # Chroot dir
     $chrootdir =  $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => '/var/chroot/bind',
-        /(?i-mx:centos|fedora|redhat)/ => '/var/named/chroot',
-        default                        => '/var/chroot/bind'
+        /(?i-mx:ubuntu|debian)/              => '/var/chroot/bind',
+        /(?i-mx:centos|fedora|redhat|rocky)/ => '/var/named/chroot',
+        default                              => '/var/chroot/bind'
     }
 
     # Configuration directory
     $configdir = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => "${chrootdir}/etc/bind",
-        /(?i-mx:centos|fedora|redhat)/ => '/etc/named',
-        default                        => '/etc/bind'
+        /(?i-mx:ubuntu|debian)/              => "${chrootdir}/etc/bind",
+        /(?i-mx:centos|fedora|redhat|rocky)/ => '/etc/named',
+        default                              => '/etc/bind'
     }
     $configdir_mode = $::operatingsystem ? {
         default => '0755',
@@ -105,8 +105,8 @@ class bind::params {
 
     # Bind main configuration file
     $configfile = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => "${chrootdir}/etc/bind/named.conf",
-        /(?i-mx:centos|fedora|redhat)/ => '/etc/named.conf',
+        /(?i-mx:ubuntu|debian)/              => "${chrootdir}/etc/bind/named.conf",
+        /(?i-mx:centos|fedora|redhat|rocky)/ => '/etc/named.conf',
         default => '/etc/bind/named.conf'
     }
     $configfile_mode = $::operatingsystem ? {
@@ -148,9 +148,9 @@ class bind::params {
 
     # PID file
     $pidfile = $::operatingsystem ?  {
-        /(?i-mx:ubuntu|debian)/        => '/var/run/bind/named.pid',
-        /(?i-mx:centos|fedora|redhat)/ => '/run/named/named.pid',
-        default                        => '/var/run/named.pid',
+        /(?i-mx:ubuntu|debian)/              => '/var/run/bind/named.pid',
+        /(?i-mx:centos|fedora|redhat|rocky)/ => '/run/named/named.pid',
+        default                              => '/var/run/named.pid',
     }
 
     # Log dir (log file will be ${logdir}/bind.log
