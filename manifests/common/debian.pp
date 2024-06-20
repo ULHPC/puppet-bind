@@ -188,7 +188,7 @@ class bind::common::debian inherits bind::common {
     }
 
     # Import libssl in chrootdir
-    if ($bind::ensure == 'present' and $::lsbdistcodename == 'wheezy') {
+    if ($bind::ensure == 'present' and $facts['os']['distro']['codename'] == 'wheezy') {
 
         exec { "Create ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu":
             command => "mkdir -p ${bind::params::chrootdir}/usr/lib/x86_64-linux-gnu",

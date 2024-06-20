@@ -53,11 +53,11 @@ inherits bind::params
         fail("bind 'ensure' parameter must be set to either 'absent' or 'present'")
     }
 
-    case $::operatingsystem {
+    case $facts['os']['name'] {
         'debian', 'ubuntu':                    { include bind::common::debian }
         'redhat', 'fedora', 'centos', 'rocky': { include bind::common::redhat }
         default: {
-            fail("Module ${::module_name} is not supported on ${::operatingsystem}")
+            fail("Module ${facts['module_name']} is not supported on ${facts['os']['name']}")
         }
     }
 }
