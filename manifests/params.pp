@@ -50,111 +50,111 @@ class bind::params {
     # (Modify to adapt to unsupported OSes)
     #######################################
     # Packages to install
-    $packagename = $::operatingsystem ? {
+    $packagename = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => 'bind9',
         /(?i-mx:centos|redhat|rocky|fedora)/ => 'bind-chroot',
         default                              => 'bind',
     }
-    $utils_packages = $::operatingsystem ? {
+    $utils_packages = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/ => [ 'nslint' ],
         default                 => [],
     }
 
     # The User running bind
-    $user = $::operatingsystem ? {
+    $user = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/ => 'bind',
         default                 => 'named',
     }
     $group = $user
 
     # Bind (aka DNS) service
-    $servicename = $::operatingsystem ? {
+    $servicename = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => 'bind9',
         /(?i-mx:centos|redhat|rocky|fedora)/ => 'named-chroot',
         default                              => 'named'
     }
     # used for pattern in a service ressource
-    $processname = $::operatingsystem ? {
+    $processname = $facts['os']['name'] ? {
         default => 'named',
     }
-    $hasstatus = $::operatingsystem ? {
+    $hasstatus = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/        => false,
         /(?i-mx:centos|fedora|redhat|rocky)/ => true,
         default => true,
     }
-    $hasrestart = $::operatingsystem ? {
+    $hasrestart = $facts['os']['name'] ? {
         default => true,
     }
 
     # Chroot dir
-    $chrootdir =  $::operatingsystem ? {
+    $chrootdir =  $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => '/var/chroot/bind',
         /(?i-mx:centos|fedora|redhat|rocky)/ => '/var/named/chroot',
         default                              => '/var/chroot/bind'
     }
 
     # Configuration directory
-    $configdir = $::operatingsystem ? {
+    $configdir = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => "${chrootdir}/etc/bind",
         /(?i-mx:centos|fedora|redhat|rocky)/ => '/etc/named',
         default                              => '/etc/bind'
     }
-    $configdir_mode = $::operatingsystem ? {
+    $configdir_mode = $facts['os']['name'] ? {
         default => '0755',
     }
 
     # Bind main configuration file
-    $configfile = $::operatingsystem ? {
+    $configfile = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => "${chrootdir}/etc/bind/named.conf",
         /(?i-mx:centos|fedora|redhat|rocky)/ => '/etc/named.conf',
         default => '/etc/bind/named.conf'
     }
-    $configfile_mode = $::operatingsystem ? {
+    $configfile_mode = $facts['os']['name'] ? {
         default => '0644',
     }
 
-    $configfile_owner = $::operatingsystem ? {
+    $configfile_owner = $facts['os']['name'] ? {
         default => $user,
     }
 
-    $configfile_group = $::operatingsystem ? {
+    $configfile_group = $facts['os']['name'] ? {
         default => $group,
     }
 
     # named.conf.local
-    $localconfigfile = $::operatingsystem ? {
+    $localconfigfile = $facts['os']['name'] ? {
         default => "${configdir}/named.conf.local"
     }
     # named.conf.default_zones
-    $default_zones_file = $::operatingsystem ? {
+    $default_zones_file = $facts['os']['name'] ? {
         default => "${configdir}/named.conf.default-zones"
     }
     # named.conf.options
-    $optionsfile = $::operatingsystem ? {
+    $optionsfile = $facts['os']['name'] ? {
         default => "${configdir}/named.conf.options"
     }
 
     #init.d default config file
-    $initconfigfile = $::operatingsystem ? {
+    $initconfigfile = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/ => '/etc/default/bind9',
         default => '/etc/sysconfig/named',
     }
 
     # Base directory for Bind
-    $basedir = $::operatingsystem ?  {
+    $basedir = $facts['os']['name'] ?  {
         /(?i-mx:ubuntu|debian)/ => '/var/cache/bind',
         default => '/var/named',
     }
 
     # PID file
-    $pidfile = $::operatingsystem ?  {
+    $pidfile = $facts['os']['name'] ?  {
         /(?i-mx:ubuntu|debian)/              => '/var/run/bind/named.pid',
         /(?i-mx:centos|fedora|redhat|rocky)/ => '/run/named/named.pid',
         default                              => '/var/run/named.pid',
     }
 
     # Log dir (log file will be ${logdir}/bind.log
-    $logdir = $::operatingsystem ?  {
+    $logdir = $facts['os']['name'] ?  {
         default => '/var/log',
     }
 
