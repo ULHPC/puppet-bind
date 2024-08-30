@@ -126,11 +126,7 @@ class bind::common {
     }
 
     # Adapt syslog configuration
-    if ! defined(Class['rsyslog::client']) {
-        class { 'rsyslog::client': }
-    }
-    rsyslog::snippet { 'bind-chroot':
-        ensure  => $bind::ensure,
+    rsyslog::component::custom_config { 'bind-chroot':
         content => template('bind/rsyslog.conf.erb'),
     }
 
