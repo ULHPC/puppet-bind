@@ -125,9 +125,11 @@ class bind::common {
         }
     }
 
-    # Adapt syslog configuration
-    rsyslog::component::custom_config { 'bind-chroot':
-        content => template('bind/rsyslog.conf.erb'),
+    if ($bind::params::support_rsyslog == true) {
+        # Adapt syslog configuration
+        rsyslog::component::custom_config { 'bind-chroot':
+            content => template('bind/rsyslog.conf.erb'),
+        }
     }
 
 }

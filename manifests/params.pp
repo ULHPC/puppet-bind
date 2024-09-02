@@ -49,6 +49,12 @@ class bind::params {
     #### MODULE INTERNAL VARIABLES  #########
     # (Modify to adapt to unsupported OSes)
     #######################################
+    if ($facts['os']['family'] == 'RedHat' and Integer($facts['os']['release']['major']) <= 7) {
+        $support_rsyslog = false
+    } else {
+        $support_rsyslog = true
+    }
+
     # Packages to install
     $packagename = $facts['os']['name'] ? {
         /(?i-mx:ubuntu|debian)/              => 'bind9',
