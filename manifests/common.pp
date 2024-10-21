@@ -38,7 +38,7 @@ class bind::common {
             hasrestart => $bind::params::hasrestart,
             pattern    => $bind::params::processname,
             hasstatus  => $bind::params::hasstatus,
-            require    => Package['bind']
+            require    => Package['bind'],
         }
 
         # Now populate the configuration directory with the default files
