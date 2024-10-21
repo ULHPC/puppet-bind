@@ -7,7 +7,7 @@ options {
     directory "<%= scope.lookupvar('bind::params::basedir') %>";
     pid-file  "<%= scope.lookupvar('bind::params::pidfile') %>";
 
-<% if @operatingsystem == 'RedHat' or @operatingsystem == 'CentOS' or @operatingsystem == 'Rocky' %>
+<% if @facts['os']['family'] == 'RedHat' %>
         dump-file              "/var/named/data/cache_dump.db";
         statistics-file        "/var/named/data/named_stats.txt";
         memstatistics-file     "/var/named/data/named_mem_stats.txt";
@@ -16,7 +16,7 @@ options {
 
         /* Path to ISC DLV key */
         bindkeys-file          "/etc/named.iscdlv.key";
-<% end%>
+<% end %>
 
     // on which interface bind should listen
     listen-on-v6 { any; };
@@ -62,7 +62,7 @@ options {
 };
 
 
-<% if @operatingsystem == 'RedHat' or @operatingsystem == 'CentOS' or @operatingsystem == 'Rocky' %>
+<% if @facts['os']['family'] == 'RedHat' %>
 logging {
         channel default_debug {
                 file "data/named.run";
