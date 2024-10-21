@@ -52,10 +52,12 @@ options {
     version none;
 
 <% if scope.lookupvar('bind::dnssec') == true -%>
-    dnssec-enable yes;
+<% if @facts['os']['family'] == 'RedHat' and @facts['os']['release']['major'].to_i < 9 %>    dnssec-enable yes;
+<% end -%>
     dnssec-validation yes;
 <% else -%>
-    dnssec-enable no;
+<% if @facts['os']['family'] == 'RedHat' and @facts['os']['release']['major'].to_i < 9 %>    dnssec-enable no;
+<% end -%>
     dnssec-validation no;
 <% end -%>
 
