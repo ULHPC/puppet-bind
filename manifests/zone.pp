@@ -122,7 +122,7 @@ define bind::zone(
         $reverse_ip = inline_template("<%= @name.split('.').reverse.join('.') %>")
         $zonename   = "${reverse_ip}.in-addr.arpa"
         $zonefile   = "reverse-${reverse_ip}.db"
-        $priority = 60
+        $priority   = 60
     }
 
     # First checks
@@ -171,10 +171,16 @@ define bind::zone(
                 '': {
                     crit('No content nor source have been specified')
                 }
-                default: { $real_source = $source }
+                default: {
+                    $real_source  = $source
+                    $real_content = undef
+                }
             }
         }
-        default: { $real_content = $content }
+        default: {
+            $real_content = $content
+            $real_source  = undef
+        }
     }
 
     # check
@@ -204,9 +210,16 @@ define bind::zone(
                 group   => $bind::params::group,
                 mode    => $bind::params::configfile_mode,
                 seltype => 'named_zone_t',
-                content => $real_content,
-                source  => $real_source,
                 notify  => Service['bind'],
+            }
+            if $real_content {
+                File["$zone_file_path"] {
+                    content => $real_content
+                }
+            } elsif $real_source {
+                File["$zone_file_path"] {
+                    source => $real_source
+                }
             }
         }
 
