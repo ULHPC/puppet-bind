@@ -213,11 +213,11 @@ define bind::zone(
                 notify  => Service['bind'],
             }
             if $real_content {
-                File["$zone_file_path"] {
+                File[$zone_file_path] {
                     content => $real_content
                 }
             } elsif $real_source {
-                File["$zone_file_path"] {
+                File[$zone_file_path] {
                     source => $real_source
                 }
             }
