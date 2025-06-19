@@ -14,19 +14,19 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">=4.2.2 <5.0.0"
+      "version_requirement": ">=4.2.2 <10.0.0"
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=2.0.0"
+      "version_requirement": ">=2.0.0 <8.0.0"
     },
     {
       "name": "puppet/selinux",
-      "version_requirement": ">=1.1.0"
+      "version_requirement": ">=1.1.0 <3.5.0"
     },
     {
       "name": "puppet/rsyslog",
-      "version_requirement": ">=4.0.0"
+      "version_requirement": ">=4.0.0 <8.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -40,7 +40,15 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "9"
       ]
     },
     {
