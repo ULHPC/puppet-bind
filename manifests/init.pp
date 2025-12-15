@@ -57,7 +57,7 @@ inherits bind::params
         'debian', 'ubuntu':                    { include bind::common::debian }
         'redhat', 'fedora', 'centos', 'rocky': { include bind::common::redhat }
         default: {
-            fail("Module ${facts['module_name']} is not supported on ${facts['os']['name']}")
+            fail("Module ${module_name} is not supported on ${facts['os']['name']}")
         }
     }
 }
