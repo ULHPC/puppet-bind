@@ -94,143 +94,140 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define bind::zone(
-    $ensure     = $bind::ensure,
-    $content    = '',
-    $source     = '',
-    $zone_type  = 'master',
-    $masters    = [],
-    $slaves     = [],
-    $forwarders = [],
-    $reverse_rr = false,
-    $add_to_resolver = false
-)
-{
-    include bind::params
+define bind::zone (
+  $ensure     = $bind::ensure,
+  $content    = '',
+  $source     = '',
+  $zone_type  = 'master',
+  $masters    = [],
+  $slaves     = [],
+  $forwarders = [],
+  $reverse_rr = false,
+  $add_to_resolver = false
+) {
+  include bind::params
 
-    # $name is provided by define invocation
-    # guid of this entry
-    if (! $reverse_rr ) {
-        # Classical mode: you define the Ressources Records (RR) for the regular
-        # name resolution i.e. from hostname to IP
-        $zonename = $name
-        $zonefile = "${zonename}.db"
-        $priority = 40
+  # $name is provided by define invocation
+  # guid of this entry
+  if (! $reverse_rr ) {
+    # Classical mode: you define the Ressources Records (RR) for the regular
+    # name resolution i.e. from hostname to IP
+    $zonename = $name
+    $zonefile = "${zonename}.db"
+    $priority = 40
+  }
+  else {
+    # Reverse name resolution i.e. from IPs to hostname
+    $reverse_ip = inline_template("<%= @name.split('.').reverse.join('.') %>")
+    $zonename   = "${reverse_ip}.in-addr.arpa"
+    $zonefile   = "reverse-${reverse_ip}.db"
+    $priority   = 60
+  }
+
+  # First checks
+  # Ensure the class bind has been instanciated
+  if (! defined( Class['bind']) ) {
+    fail("The class 'bind' is not instancied")
+  }
+
+  # Check the 'ensure' parameter
+  if ! ($ensure in ['present', 'absent']) {
+    fail("bind::zone 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
+
+  if ($bind::ensure != $ensure) {
+    if ($bind::ensure == 'present') {
+      warning(" bind::ensure (value '${bind::ensure}') differs from the ensure parameter ('${ensure}'): the zone '${zonename} won't be added'")
     }
     else {
-        # Reverse name resolution i.e. from IPs to hostname
-        $reverse_ip = inline_template("<%= @name.split('.').reverse.join('.') %>")
-        $zonename   = "${reverse_ip}.in-addr.arpa"
-        $zonefile   = "reverse-${reverse_ip}.db"
-        $priority   = 60
+      fail("Cannot add the zone '${zonename}' as bind::ensure is NOT set to present")
     }
+  }
 
-    # First checks
-    # Ensure the class bind has been instanciated
-    if (! defined( Class['bind'] ) ) {
-        fail("The class 'bind' is not instancied")
-    }
+  # Check the type parameter
+  if ! ($zone_type in ['master', 'slave', 'forward']) {
+    fail("bind::zone 'zone_type' parameter must be set to either 'master', 'slave' or 'forward'")
+  }
+  if ($zone_type in ['forward']) {
+    fail("The BIND zone type ${zone_type} is not yet implemented")
+  }
 
-    # Check the 'ensure' parameter
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("bind::zone 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
+  if (
+    ($zone_type == 'slave'  and
+    ($masters == [] or $slaves != []))
+    or
+    ($zone_type == 'master' and
+    $masters != [])
+  ) {
+    fail("Inconsistent use of zone_type (${zone_type}), slaves (${slaves}) and masters (${masters}) parameters")
+  }
 
-    if ($bind::ensure != $ensure) {
-        if ($bind::ensure == 'present') {
-            warning(" bind::ensure (value '${bind::ensure}') differs from the ensure parameter ('${ensure}'): the zone '${zonename} won't be added'")
-        }
-        else {
-            fail("Cannot add the zone '${zonename}' as bind::ensure is NOT set to present")
-        }
-    }
-
-    # Check the type parameter
-    if ! ($zone_type in [ 'master', 'slave', 'forward' ]) {
-        fail("bind::zone 'zone_type' parameter must be set to either 'master', 'slave' or 'forward'")
-    }
-    if ($zone_type in [ 'forward' ]) {
-        fail("The BIND zone type ${zone_type} is not yet implemented")
-    }
-
-    if (
-          ($zone_type == 'slave'  and
-          ($masters == [] or $slaves != [] ))
-        or
-          ($zone_type == 'master' and
-          $masters != [])
-        )
-    {
-        fail("Inconsistent use of zone_type (${zone_type}), slaves (${slaves}) and masters (${masters}) parameters")
-    }
-
-    # if content is passed, use that, else if source is passed use that
-    case $content {
+  # if content is passed, use that, else if source is passed use that
+  case $content {
+    '': {
+      case $source {
         '': {
-            case $source {
-                '': {
-                    crit('No content nor source have been specified')
-                }
-                default: {
-                    $real_source  = $source
-                    $real_content = undef
-                }
-            }
+          crit('No content nor source have been specified')
         }
         default: {
-            $real_content = $content
-            $real_source  = undef
+          $real_source  = $source
+          $real_content = undef
         }
+      }
+    }
+    default: {
+      $real_content = $content
+      $real_source  = undef
+    }
+  }
+
+  # check
+  if ($reverse_rr) and ($add_to_resolver) {
+    fail("${name}: Cannot have a reverse zone set to be added to /etc/resolv.conf")
+  }
+
+  # Let's go
+  info("Manage the custom bind zone ${zonename} of type ${zone_type} (with ensure = ${ensure})")
+
+  if ($bind::ensure == 'present') {
+    if ($zone_type == 'slave' and $facts['os']['name'] in ['CentOS', 'RedHat', 'Rocky']) {
+      $zone_file_path = "slaves/${zonefile}"
+    } else {
+      $zone_file_path = "${bind::params::configdir}/zones/${zonefile}"
     }
 
-    # check
-    if ($reverse_rr) and ($add_to_resolver) {
-        fail("${name}: Cannot have a reverse zone set to be added to /etc/resolv.conf")
+    concat::fragment { "configure bind zone ${zonename}":
+      target  => $bind::params::localconfigfile,
+      content => template('bind/custom_zone.erb'),
+      order   => $priority,
     }
 
-    # Let's go
-    info("Manage the custom bind zone ${zonename} of type ${zone_type} (with ensure = ${ensure})")
-
-    if ($bind::ensure == 'present') {
-        if ($zone_type == 'slave' and $facts['os']['name'] in [ 'CentOS', 'RedHat', 'Rocky' ]) {
-            $zone_file_path = "slaves/${zonefile}"
-        } else {
-            $zone_file_path = "${bind::params::configdir}/zones/${zonefile}"
+    if ($zone_type == 'master') {
+      file { $zone_file_path:
+        owner   => $bind::params::user,
+        group   => $bind::params::group,
+        mode    => $bind::params::configfile_mode,
+        seltype => 'named_zone_t',
+        notify  => Service['bind'],
+      }
+      if $real_content {
+        File[$zone_file_path] {
+          content => $real_content
         }
-
-        concat::fragment { "configure bind zone ${zonename}":
-            target  => $bind::params::localconfigfile,
-            content => template('bind/custom_zone.erb'),
-            order   => $priority,
+      } elsif $real_source {
+        File[$zone_file_path] {
+          source => $real_source
         }
-
-        if ($zone_type == 'master') {
-            file { $zone_file_path:
-                owner   => $bind::params::user,
-                group   => $bind::params::group,
-                mode    => $bind::params::configfile_mode,
-                seltype => 'named_zone_t',
-                notify  => Service['bind'],
-            }
-            if $real_content {
-                File[$zone_file_path] {
-                    content => $real_content
-                }
-            } elsif $real_source {
-                File[$zone_file_path] {
-                    source => $real_source
-                }
-            }
-        }
-
-        if ($add_to_resolver) {
-            bind::resolver { $zonename:
-                ensure     => $ensure,
-                nameserver => '127.0.0.1',
-                order      => '01',
-                notify     => Service['bind'],
-            }
-        }
-
+      }
     }
+
+    if ($add_to_resolver) {
+      bind::resolver { $zonename:
+        ensure     => $ensure,
+        nameserver => '127.0.0.1',
+        order      => '01',
+        notify     => Service['bind'],
+      }
+    }
+  }
 }

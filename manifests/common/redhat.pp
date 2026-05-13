@@ -7,4 +7,4 @@
 # = Class: bind::common::redhat
 #
 # Specialization class for Redhat systems
-class bind::common::redhat inherits bind::common { }
+class bind::common::redhat inherits bind::common {}
