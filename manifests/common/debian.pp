@@ -107,7 +107,7 @@ class bind::common::debian inherits bind::common {
     exec { "Creates ${bind::params::chrootdir}":
       command => "mkdir -p ${bind::params::chrootdir}",
       path    => '/usr/bin:/usr/sbin:/bin',
-      creates => "${bind::params::chrootdir}",
+      creates => $bind::params::chrootdir,
       require => Package['bind'],
     }
 
@@ -134,12 +134,12 @@ class bind::common::debian inherits bind::common {
     }
 
     exec { "Set ownership of ${bind::params::chrootdir}":
-      command => "chown -R ${bind::params::user}:${bind::params::group} ${bind::params::chrootdir}",
-      path    => '/usr/bin:/usr/sbin:/bin',
+      command     => "chown -R ${bind::params::user}:${bind::params::group} ${bind::params::chrootdir}",
+      path        => '/usr/bin:/usr/sbin:/bin',
       refreshonly => true,
-      require => [
+      require     => [
         Exec["Creates ${bind::params::chrootdir}"],
-        Exec["Populate chroot directory"],
+        Exec['Populate chroot directory'],
         Exec["create ${bind::params::chrootdir}/dev/null"],
         Exec["create ${bind::params::chrootdir}/dev/random"],
       ],
