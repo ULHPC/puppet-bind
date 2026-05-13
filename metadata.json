@@ -1,6 +1,6 @@
 {
   "name": "ULHPC-bind",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "author": "UL HPC Team",
   "summary": "Configure and manage bind",
   "license": "GPL-3.0",
