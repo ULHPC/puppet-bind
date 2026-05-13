@@ -53,46 +53,42 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define bind::resolver(
-    $nameserver = '',
-    $order      = '10',
-    $ensure     = 'present'
-)
-{
-    include bind::params
+define bind::resolver (
+  $nameserver = '',
+  $order      = '10',
+  $ensure     = 'present'
+) {
+  include bind::params
 
-    # $name is provided by define invocation
-    # guid of this entry
-    $domain_name = $name
+  # $name is provided by define invocation
+  # guid of this entry
+  $domain_name = $name
 
-    # First checks
-    if (! defined( Concat['/etc/resolv.conf'] ) ) {
-        # backup resolv.conf
-        exec { 'cp /etc/resolv.conf /etc/resolv.conf.old':
-            path   => '/usr/bin:/usr/sbin:/bin',
-            unless => 'test -f /etc/resolv.conf.old',
-            notify => Concat['/etc/resolv.conf'],
-        }
-
-        include concat::setup
-        concat { '/etc/resolv.conf':
-            warn  => true,
-            owner => 'root',
-            group => 'root',
-            mode  => '0644',
-        }
+  # First checks
+  if (! defined( Concat['/etc/resolv.conf']) ) {
+    # backup resolv.conf
+    exec { 'cp /etc/resolv.conf /etc/resolv.conf.old':
+      path   => '/usr/bin:/usr/sbin:/bin',
+      unless => 'test -f /etc/resolv.conf.old',
+      notify => Concat['/etc/resolv.conf'],
     }
 
-    # Check the 'ensure' parameter
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("bind::resolver 'ensure' parameter must be set to either 'absent' or 'present'")
+    include concat::setup
+    concat { '/etc/resolv.conf':
+      warn  => true,
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
     }
+  }
 
-    concat::fragment { "/etc/resolv.conf_${domain_name}":
-        target  => '/etc/resolv.conf',
-        content => template('bind/resolv.conf.part.erb'),
-        order   => $order,
-    }
+  # Check the 'ensure' parameter
+  if ! ($ensure in ['present', 'absent']) {
+    fail("bind::resolver 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
 
-
-}
+  concat::fragment { "/etc/resolv.conf_${domain_name}":
+    target  => '/etc/resolv.conf',
+    content => template('bind/resolv.conf.part.erb'),
+    order   => $order,
+} }

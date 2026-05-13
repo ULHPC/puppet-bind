@@ -39,25 +39,24 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-class bind(
-    $ensure      = $bind::params::ensure,
-    $forwarders  = $bind::params::forwarders,
-    $allow_query = $bind::params::allow_query,
-    $dnssec      = $bind::params::dnssec
+class bind (
+  $ensure      = $bind::params::ensure,
+  $forwarders  = $bind::params::forwarders,
+  $allow_query = $bind::params::allow_query,
+  $dnssec      = $bind::params::dnssec
 )
-inherits bind::params
-{
-    info ("Configuring bind (aka DNS server) with ensure = ${ensure}")
+inherits bind::params {
+  info ("Configuring bind (aka DNS server) with ensure = ${ensure}")
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("bind 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
+  if ! ($ensure in ['present', 'absent']) {
+    fail("bind 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
 
-    case $facts['os']['name'] {
-        'debian', 'ubuntu':                    { include bind::common::debian }
-        'redhat', 'fedora', 'centos', 'rocky': { include bind::common::redhat }
-        default: {
-            fail("Module ${module_name} is not supported on ${facts['os']['name']}")
-        }
+  case $facts['os']['name'] {
+    'debian', 'ubuntu':                    { include bind::common::debian }
+    'redhat', 'fedora', 'centos', 'rocky': { include bind::common::redhat }
+    default: {
+      fail("Module ${module_name} is not supported on ${facts['os']['name']}")
     }
+  }
 }
